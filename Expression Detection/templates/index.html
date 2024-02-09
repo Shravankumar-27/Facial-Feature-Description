@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emotion Analysis Web App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        #container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        #bigBox {
+            width: 100%; /* Adjust as needed */
+            display: flex;
+            justify-content: space-between;
+            background-color: #f0f0f0;
+            padding: 2px;
+            box-sizing: border-box;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .box {
+            width: calc(50% - 10px); /* Half the size of big box minus margin */
+            padding: 10px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        #emotionOutput {
+            font-size: 24px;
+        }
+        #webcam {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="bigBox">
+            <div class="box" id="outputBox">
+                <div>Dominant Emotion: <span id="emotionOutput">Output will appear here</span></div>
+            </div>
+            <div class="box" id="webcamBox">
+                <video id="webcam" autoplay></video>
+            </div>
+        </div>
+    </div>
+
+    <script src="static/app.js"></script>
+</body>
+</html>
