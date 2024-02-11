@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webcam Capture</title>
+</head>
+<body>
+    <video id="webcam" width="640" height="480" autoplay></video>
+    <button id="startButton">Start Capture</button>
+    <button id="stopButton">Stop Capture</button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const webcam = document.getElementById('webcam');
+            const startButton = document.getElementById('startButton');
+            const stopButton = document.getElementById('stopButton');
+            let capturing = false;
+
+            // Access the webcam stream
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then((stream) => {
+                    webcam.srcObject = stream;
+                })
+                .catch((error) => {
+                    console.error('Error accessing webcam:', error);
+                });
+
+            // Function to capture and send a frame to the server
+            const captureFrame = () => {
+                const canvas = document.createElement('canvas');
+                canvas.width = webcam.videoWidth;
+                canvas.height = webcam.videoHeight;
+                const context = canvas.getContext('2d');
+                context.drawImage(webcam, 0, 0, canvas.width, canvas.height);
+
+                const dataUrl = canvas.toDataURL('image/jpeg');
+
+                // Send the captured frame to the server
+                fetch('/upload', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: `data=${encodeURIComponent(dataUrl)}`,
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data.message);
+                    console.log('Frame saved to:', data.filename);
+                    console.log(data.var1);
+                    console.log(data.typ);
+                })
+                .catch(error => {
+                    console.error('Error uploading frame:', error);
+                });
+
+                // Continue capturing frames if the flag is set
+                if (capturing) {
+                    requestAnimationFrame(captureFrame);
+                }
+            };
+
+            // Start capturing frames
+            startButton.addEventListener('click', () => {
+                capturing = true;
+                captureFrame();
+                capturing = false;
+            });
+
+            // Stop capturing frames
+            stopButton.addEventListener('click', () => {
+                capturing = false;
+            });
+        });
+    </script>
+</body>
+</html>
