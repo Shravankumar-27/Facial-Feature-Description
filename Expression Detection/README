@@ -1,1 +1,3 @@
 DONT FORGET TO CLONE DEEPFACE AND TENSORFLOW FROM GITHUB AND ATTACH THOSE INTO EXPRESSION DETECTION FOLDER
+DeepFace- https://github.com/serengil/deepface.git
+TensorFlow- https://github.com/tensorflow/tensorflow.git
